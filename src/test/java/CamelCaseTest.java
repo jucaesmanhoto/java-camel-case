@@ -2,13 +2,14 @@ import exceptions.InvalidEntryException;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-@FixMethodOrder
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CamelCaseTest {
     private CamelCase camelCase;
     @Before
@@ -22,11 +23,14 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test02_ShouldReturnTheRightStringForASingleLowerCase(){
-        String actual = camelCase.converterCamelCase("name").get(0);
-        String expected = "name";
-
-        assertEquals(expected, actual);
+    public void test02_ShouldThrowAnErrorIfContainsSpecialCharacters(){
+        String expected = "Must not start with a number.";
+        try {
+            camelCase.converterCamelCase("10Firsts");
+            fail();
+        }catch (Exception e){
+            assertEquals(expected, e.getMessage());
+        }
     }
 
     @Test
@@ -41,7 +45,15 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test04_ShouldReturnsLowerCaseIfIsOnlyOneWord(){
+    public void test04_ShouldReturnTheRightStringForASingleLowerCase(){
+        String actual = camelCase.converterCamelCase("name").get(0);
+        String expected = "name";
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test05_ShouldReturnsLowerCaseIfIsOnlyOneWord(){
         String actual = camelCase.converterCamelCase("Name").get(0);
         String expected = "name";
 
@@ -49,7 +61,7 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test05_ShouldReturnAllUpCasedIfOneUpCasedWord(){
+    public void test06_ShouldReturnAllUpCasedIfOneUpCasedWord(){
         String actual = camelCase.converterCamelCase("CPF").get(0);
         String expected = "CPF";
 
@@ -57,7 +69,7 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test06_ShouldReturnLowerCasedStringsForMultipleEntries(){
+    public void test07_ShouldReturnLowerCasedStringsForMultipleEntries(){
 
         List<String> actual = camelCase.converterCamelCase("nameSurname");
 
@@ -67,7 +79,7 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test07_ShouldReturnLowerCasedStringsForMultipleEntriesStartingWithCapital(){
+    public void test08_ShouldReturnLowerCasedStringsForMultipleEntriesStartingWithCapital(){
 
         List<String> actual = camelCase.converterCamelCase("NameSurname");
 
@@ -77,7 +89,7 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test08_ShouldReturnRightResultsForNumbersInTheString(){
+    public void test09_ShouldReturnRightResultsForNumbersInTheString(){
 
         List<String> actual = camelCase.converterCamelCase("Get10Firsts");
 
@@ -88,7 +100,7 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test09_ShouldReturnRightResultsForCapitalLettersTheString(){
+    public void test10_ShouldReturnRightResultsForCapitalLettersTheString(){
 
         List<String> actual = camelCase.converterCamelCase("numberCPF");
 
@@ -98,7 +110,7 @@ public class CamelCaseTest {
     }
 
     @Test
-    public void test010_ShouldReturnRightResultsForCapitalLettersTheString(){
+    public void test11_ShouldReturnRightResultsForCapitalLettersTheString(){
 
         List<String> actual = camelCase.converterCamelCase("numberCPFCitizen");
 

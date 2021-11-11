@@ -1,9 +1,7 @@
 import exceptions.InvalidEntryException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +44,8 @@ public class CamelCase {
 
         List<Integer> newWordStartIndexes = getNewWordStartIndexes(characters);
 
-        if (!newWordStartIndexes.isEmpty())
+//        0 is always included as new word index
+        if (newWordStartIndexes.size() > 1)
             results = splitStrings(original, newWordStartIndexes);
         else
             results.add(original.toLowerCase());
@@ -73,8 +72,8 @@ public class CamelCase {
         // the first word always start on index 0
         results.add(0);
 
-        for (int i = 0; i < characters.length; i++) {
-            if (i != 0 && i < characters.length-1
+        for (int i = 1; i < characters.length; i++) {
+            if (i < characters.length-1
                     && isTheBeginOfNewWord(characters[i-1], characters[i], characters[i+1])){
                 results.add(i);
             }
