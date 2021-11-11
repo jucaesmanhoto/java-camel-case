@@ -17,7 +17,7 @@ public class CamelCaseTest {
         camelCase = new CamelCase();
     }
 
-    @Test(expected = InvalidEntryException.class)
+    @Test(expected = Exception.class)
     public void test01_ShouldThrowAnErrorIfStartsWithANumber(){
         camelCase.converterCamelCase("10Firsts");
     }
